@@ -10,7 +10,7 @@ export default function PostList() {
 
     const fetchPosts = useCallback(async () => {
         const res = await axios.get<Posts>(
-            `http://${window.location.hostname}:4000/posts`,
+            `http://${window.location.hostname}:4002/posts`,
         );
 
         setPosts(res.data);
@@ -23,7 +23,7 @@ export default function PostList() {
     const renderedPosts = Object.values(posts).map(post => (
         <li key={post.id} className='basis-[15rem] rounded-lg bg-slate-500 p-4'>
             <h3 className='mb-3'>{post.title}</h3>
-            <CommentList postId={post.id} />
+            <CommentList comments={post.comments} />
             <CommentCreate postId={post.id} />
         </li>
     ));

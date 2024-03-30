@@ -1,4 +1,4 @@
-import { Comment } from '@/types/comment';
+import { Comment } from './comment';
 
 type Post = {
     id: string;

@@ -1,27 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-
 import type { Comment } from '@/types/comment';
 
 interface CommentListProps {
-    postId: string;
+    comments: Comment[];
 }
 
-export default function CommentList({ postId }: CommentListProps) {
-    const [comments, setComments] = useState<Comment[]>([]);
-
-    const fetchComments = useCallback(async () => {
-        const res = await axios.get(
-            `http://${window.location.hostname}:4001/posts/${postId}/comments`,
-        );
-
-        setComments(res.data);
-    }, [postId]);
-
-    useEffect(() => {
-        fetchComments();
-    }, [fetchComments]);
-
+export default function CommentList({ comments }: CommentListProps) {
     const renderedComments = comments.map(comment => (
         <li key={comment.id} className='p-1'>
             <p className='inline'>{comment.content}</p>
