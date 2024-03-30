@@ -11,6 +11,8 @@ services:
     comments:
         build:
             context: comments
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         volumes:
             - ./comments:/app
             - /app/node_modules
@@ -19,8 +21,20 @@ services:
     posts:
         build:
             context: posts
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         volumes:
             - ./posts:/app
             - /app/node_modules
         ports:
             - 4000:4000
+    events:
+        build:
+            context: event-bus
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        volumes:
+            - ./event-bus:/app
+            - /app/node_modules
+        ports:
+            - 4005:4005
