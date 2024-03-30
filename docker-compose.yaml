@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+    client:
+        build:
+            context: client
+        volumes:
+            - ./client:/app
+            - /app/node_modules
+        ports:
+            - 5173:5173
+    comments:
+        build:
+            context: comments
+        volumes:
+            - ./comments:/app
+            - /app/node_modules
+        ports:
+            - 4001:4001
+    posts:
+        build:
+            context: posts
+        volumes:
+            - ./posts:/app
+            - /app/node_modules
+        ports:
+            - 4000:4000
