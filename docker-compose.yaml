@@ -38,6 +38,16 @@ services:
             - /app/node_modules
         ports:
             - 4002:4002
+    moderation:
+        build:
+            context: moderation
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        volumes:
+            - ./moderation:/app
+            - /app/node_modules
+        ports:
+            - 4003:4003
     events:
         build:
             context: event-bus

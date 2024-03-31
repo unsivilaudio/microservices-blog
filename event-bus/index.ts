@@ -10,6 +10,7 @@ app.post('/events', (req, res) => {
     axios.post('http://host.docker.internal:4000/events', event);
     axios.post('http://host.docker.internal:4001/events', event);
     axios.post('http://host.docker.internal:4002/events', event);
+    axios.post('http://host.docker.internal:4003/events', event);
 
     res.status(201).json({ status: 'Ok' });
 });
