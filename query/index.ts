@@ -1,6 +1,8 @@
 import express from 'express';
+import axios from 'axios';
+
 import type { Posts } from './types/post';
-import type { EventsPostRequest } from './types/events';
+import type { EventsPostBody, EventsPostRequest } from './types/events';
 
 const app = express();
 
@@ -19,13 +21,7 @@ app.use((req, res, next) => {
 
 const posts: Posts = {};
 
-app.get('/posts', (req, res) => {
-    res.json(posts);
-});
-
-app.post('/events', (req: EventsPostRequest, res) => {
-    const { type, data } = req.body;
-
+function handleEvent({ type, data }: EventsPostBody) {
     if (type === 'PostCreated') {
         const { id, title } = data;
 
@@ -47,6 +43,7 @@ app.post('/events', (req: EventsPostRequest, res) => {
         const { id, postId, status, content } = data;
 
         const post = posts[postId];
+        if (!post) return;
         const comment = post.comments.find(comment => {
             return comment.id === id;
         });
@@ -56,10 +53,34 @@ app.post('/events', (req: EventsPostRequest, res) => {
             comment.content = content;
         }
     }
+}
+
+app.get('/posts', (req, res) => {
+    res.json(posts);
+});
+
+app.post('/events', (req: EventsPostRequest, res) => {
+    handleEvent(req.body);
 
     res.json({});
 });
 
-app.listen(4002, () => {
+app.listen(4002, async () => {
     console.log('[QUERY] Listening on port 4002');
+
+    try {
+        const res = await axios.get<EventsPostBody[]>(
+            'http://host.docker.internal:4005/events'
+        );
+
+        for (const event of res.data) {
+            console.log('Processing event:', event.type);
+
+            handleEvent(event);
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(error.message);
+        }
+    }
 });

@@ -5,11 +5,26 @@ interface CommentListProps {
 }
 
 export default function CommentList({ comments }: CommentListProps) {
-    const renderedComments = comments.map(comment => (
-        <li key={comment.id} className='p-1'>
-            <p className='inline'>{comment.content}</p>
-        </li>
-    ));
+    const renderedComments = comments.map(comment => {
+        let content: string = '';
+        if (comment.status === 'approved') {
+            content = comment.content;
+        }
+
+        if (comment.status === 'pending') {
+            content = 'This comment is awaitng moderation';
+        }
+
+        if (comment.status === 'rejected') {
+            content = 'This comment has been rejected';
+        }
+
+        return (
+            <li key={comment.id} className='p-1'>
+                <p className='inline'>{content}</p>
+            </li>
+        );
+    });
 
     return (
         <ul className='mb-2 list-inside list-disc divide-y-[1px] divide-slate-300 rounded-lg border border-slate-300 bg-slate-600 p-2'>

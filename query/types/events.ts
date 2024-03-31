@@ -21,7 +21,7 @@ type CommentUpdated = {
     };
 };
 
-type EventsPostBody = PostCreated | CommentCreated | CommentUpdated;
+export type EventsPostBody = PostCreated | CommentCreated | CommentUpdated;
 
 export interface EventsPostRequest extends Request {
     body: EventsPostBody;

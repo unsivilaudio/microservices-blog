@@ -38,6 +38,8 @@ services:
             - /app/node_modules
         ports:
             - 4002:4002
+        depends_on:
+            - events
     moderation:
         build:
             context: moderation
